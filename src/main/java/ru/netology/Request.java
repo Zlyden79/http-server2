@@ -1,7 +1,12 @@
 package ru.netology;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Request {
@@ -64,10 +69,22 @@ public class Request {
         this.body = body;
     }
 
+    public static List<NameValuePair> getQueryParams() {
+        Charset charset = Charset.forName("UTF-8");
+        return URLEncodedUtils.parse(this.queryString, charset);
+    }
+
+    public static List<NameValuePair> getQueryParam(String name) {
+        return getQueryParams().stream()
+                .filter(a -> a.getName().equals(name))
+                .toList();
+    }
+
     @Override
     public String toString() {
         return "Request{" +
                 "path='" + path + '\'' +
+                "queryString" + queryString '\'' +
                 ", method='" + method + '\'' +
                 ", version='" + version + '\'' +
                 ", headers=" + headers +
