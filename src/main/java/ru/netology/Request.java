@@ -98,8 +98,8 @@ public class Request {
                 ", headers=" + headers + "\n" +
                 ", queryString='" + queryString + '\'' + "\n" +
                 ", fragment='" + fragment + '\'' + "\n" +
-                ", body=" + Arrays.toString(body) +
-                '}';
+                ", body=" + Arrays.toString(body) + "\n" +
+        '}';
     }
 }
 
