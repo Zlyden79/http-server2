@@ -9,7 +9,7 @@ public class Request {
     private String method;
     private String version;
     private Map<String, String> headers;
-    private char[] body;
+    private byte[] body;
 
     public Request() {
         headers = new HashMap<String, String>();
@@ -47,11 +47,11 @@ public class Request {
         headers.put(key, value);
     }
 
-    public char[] getBody() {
+    public byte[] getBody() {
         return body;
     }
 
-    public void setBody(char[] body) {
+    public void setBody(byte[] body) {
         this.body = body;
     }
 
