@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class Request {
     private String path;
+    private String queryString;
     private String method;
     private String version;
     private Map<String, String> headers;
@@ -29,6 +30,14 @@ public class Request {
 
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    public void setQueryString(String queryString) {
+        this.queryString = queryString;
     }
 
     public String getVersion() {
