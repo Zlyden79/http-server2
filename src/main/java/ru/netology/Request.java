@@ -12,6 +12,7 @@ import java.util.Map;
 public class Request {
     private String path;
     private String queryString;
+    private String fragment;
     private String method;
     private String version;
     private Map<String, String> headers;
@@ -67,6 +68,14 @@ public class Request {
 
     public void setBody(byte[] body) {
         this.body = body;
+    }
+
+    public String getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(String fragment) {
+        this.fragment = fragment;
     }
 
     public static List<NameValuePair> getQueryParams() {
