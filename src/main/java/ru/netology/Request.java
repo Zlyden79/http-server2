@@ -78,12 +78,12 @@ public class Request {
         this.fragment = fragment;
     }
 
-    public static List<NameValuePair> getQueryParams() {
+    public List<NameValuePair> getQueryParams() {
         Charset charset = Charset.forName("UTF-8");
         return URLEncodedUtils.parse(this.queryString, charset);
     }
 
-    public static List<NameValuePair> getQueryParam(String name) {
+    public List<NameValuePair> getQueryParam(String name) {
         return getQueryParams().stream()
                 .filter(a -> a.getName().equals(name))
                 .toList();
@@ -95,7 +95,7 @@ public class Request {
                 "method='" + method + '\'' +
                 ", path='" + path + '\'' +
                 ", version='" + version + '\'' + "\n" +
-                ", headers=" + headers + + "\n" +
+                ", headers=" + headers + "\n" +
                 ", queryString='" + queryString + '\'' + "\n" +
                 ", fragment='" + fragment + '\'' + "\n" +
                 ", body=" + Arrays.toString(body) +
