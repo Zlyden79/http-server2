@@ -91,12 +91,13 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Request{" +
-                "path='" + path + '\'' +
-                "queryString" + queryString '\'' +
-                ", method='" + method + '\'' +
-                ", version='" + version + '\'' +
-                ", headers=" + headers +
+        return "Request{ \n" +
+                "method='" + method + '\'' +
+                ", path='" + path + '\'' +
+                ", version='" + version + '\'' + "\n" +
+                ", headers=" + headers + + "\n" +
+                ", queryString='" + queryString + '\'' + "\n" +
+                ", fragment='" + fragment + '\'' + "\n" +
                 ", body=" + Arrays.toString(body) +
                 '}';
     }
