@@ -97,8 +97,9 @@ public class Server {
             try (final var in = new BufferedInputStream(socket.getInputStream());
                  final var out = new BufferedOutputStream(socket.getOutputStream())
             ) {
+                //cюда будем собирать объект класса Request.
                 final Request request = new Request();
-
+                //устанавливаем лимит на requestLine + headers в 4 кБ
                 final var limit = 4096;
                 in.mark(limit);
 
@@ -136,11 +137,11 @@ public class Server {
                 if (requestLine[1].contains("?")) qIdx = requestLine[1].indexOf('?');
                 if (requestLine[1].contains("#")) fIdx = requestLine[1].indexOf('#');
 
-                //путь к ресурсу без qeryString и fragment
+                //путь к ресурсу без queryString и fragment
                 String path = requestLine[1].substring(0, qIdx);
                 request.setPath(path);
 
-                //queryString - если нету - то пустая строка
+                //queryString - если нету в requestLine - то пока пустая строка
                 String queryString = "";
                 if (qIdx != requestLine[1].length()) queryString = requestLine[1].substring(qIdx + 1, fIdx);
                 request.setRawQueryString(queryString);
@@ -162,8 +163,9 @@ public class Server {
                 in.reset();
                 // пропускаем requestLine
                 in.skip(headersStart);
-
+                //читаем заголовки в массив байт
                 final var headersBytes = in.readNBytes(headersEnd - headersStart);
+                //пока парсим заголовки в список строк
                 final var headers = Arrays.asList(new String(headersBytes).split("\r\n"));
                 //теперь парсим заголовки в мапу объекта request
                 for (String line : headers) {
@@ -185,7 +187,8 @@ public class Server {
                     final var bodyBytes = in.readNBytes(length);
                     request.setBody(bodyBytes);
                 }
-
+                //тут мы заполняем Set параметров QueryString (чтобы был удобный доступ)
+                request.addQueryParamNames();
                 //Тут мы завершили формирование объекта класса Request, выведем ка его в консоль поглазеть
                 System.out.println(request);
                 //поглядим в queryString все параметры
@@ -197,13 +200,13 @@ public class Server {
                 path = request.getPath(); // получаем адрес ресурса
                 Resource resource = new Resource(method, path); // упаковываем в Resource
 
-                //Проверяем, зарегистрирован ли ресурс вообще, и если нет - то шлём 404
+                //Проверяем, зарегистрирован ли ресурс вообще, и если нет - то шлём BadRequest
                 if (!resourceSet.contains(resource)) {
                     badRequest(out);
                     Thread.currentThread().interrupt();
                 }
 
-                //Проверяем, есть ли зарегистрированный Handler для ресурса, и если нет - то шлём 404
+                //Проверяем, есть ли зарегистрированный Handler для ресурса, и если нет - то шлём BadRequest
                 if (handlers.get(resource) == null) {
                     badRequest(out);
                     Thread.currentThread().interrupt();

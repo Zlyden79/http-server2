@@ -4,14 +4,12 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Request {
     private String path;
     private String rawQueryString;
+    private Set<String> queryParamNames;
     private String fragment;
     private String method;
     private String version;
@@ -20,6 +18,16 @@ public class Request {
 
     public Request() {
         headers = new HashMap<String, String>();
+        queryParamNames = new HashSet<>();
+    }
+
+    public char[] byteToChar(byte[] array) {
+        int arrLength = array.length;
+        char[] charArr = new char[arrLength];
+        for (int i=0; i < arrLength; i++){
+            charArr[i] = (char) array[i];
+        }
+        return charArr;
     }
 
     public String getPath() {
@@ -83,6 +91,18 @@ public class Request {
         return URLEncodedUtils.parse(this.rawQueryString, charset);
     }
 
+    public Set<String> getQueryParamNames() {
+        return queryParamNames;
+    }
+
+    public void addQueryParamNames() {
+        List<NameValuePair> nameValuePairList = this.getQueryParams();
+        for (NameValuePair nameValuePair : nameValuePairList) {
+            queryParamNames.add(nameValuePair.getName());
+        }
+    }
+
+
     public List<NameValuePair> getQueryParam(String name) {
         return getQueryParams().stream()
                 .filter(a -> a.getName().equals(name))
@@ -97,9 +117,10 @@ public class Request {
                 ", version='" + version + '\'' + "\n" +
                 ", headers=" + headers + "\n" +
                 ", rawQueryString='" + rawQueryString + '\'' + "\n" +
+                ", queryParamNames='" + queryParamNames + '\'' + "\n" +
                 ", fragment='" + fragment + '\'' + "\n" +
                 ", body=" + Arrays.toString(body) + "\n" +
-        '}';
+                '}';
     }
 }
 
