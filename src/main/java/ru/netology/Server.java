@@ -187,6 +187,14 @@ public class Server {
                     final var bodyBytes = in.readNBytes(length);
                     request.setBody(bodyBytes);
                 }
+
+                String method = request.getMethod(); //получаем метод запроса
+                String encType = request.getHeaders().get("Content-Type"); // получаем Content-Type
+
+                if ("POST".equals(method) && "application/x-www-form-urlencoded".equals(encType)) {
+                    request.getPostParams();
+                }
+
                 //тут мы заполняем Set параметров QueryString (чтобы был удобный доступ)
                 request.addQueryParamNames();
                 //Тут мы завершили формирование объекта класса Request, выведем ка его в консоль поглазеть
@@ -196,7 +204,7 @@ public class Server {
                 //поищем в queryString значения по полю value
                 System.out.println("Только поля с name = value: " + request.getQueryParam("value"));
 
-                String method = request.getMethod(); //получаем метод запроса
+
                 path = request.getPath(); // получаем адрес ресурса
                 Resource resource = new Resource(method, path); // упаковываем в Resource
 
