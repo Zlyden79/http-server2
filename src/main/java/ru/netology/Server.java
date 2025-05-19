@@ -143,7 +143,7 @@ public class Server {
                 //queryString - если нету - то пустая строка
                 String queryString = "";
                 if (qIdx != requestLine[1].length()) queryString = requestLine[1].substring(qIdx + 1, fIdx);
-                request.setQueryString(queryString);
+                request.setRawQueryString(queryString);
                 //fragment - если нету - то пустая строка
                 String fragment = "";
                 if (fIdx != requestLine[1].length()) fragment = requestLine[1].substring(fIdx + 1);

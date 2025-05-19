@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Request {
     private String path;
-    private String queryString;
+    private String rawQueryString;
     private String fragment;
     private String method;
     private String version;
@@ -38,12 +38,12 @@ public class Request {
         this.method = method;
     }
 
-    public String getQueryString() {
-        return queryString;
+    public String getRawQueryString() {
+        return rawQueryString;
     }
 
-    public void setQueryString(String queryString) {
-        this.queryString = queryString;
+    public void setRawQueryString(String rawQueryString) {
+        this.rawQueryString = rawQueryString;
     }
 
     public String getVersion() {
@@ -80,7 +80,7 @@ public class Request {
 
     public List<NameValuePair> getQueryParams() {
         Charset charset = Charset.forName("UTF-8");
-        return URLEncodedUtils.parse(this.queryString, charset);
+        return URLEncodedUtils.parse(this.rawQueryString, charset);
     }
 
     public List<NameValuePair> getQueryParam(String name) {
@@ -96,7 +96,7 @@ public class Request {
                 ", path='" + path + '\'' +
                 ", version='" + version + '\'' + "\n" +
                 ", headers=" + headers + "\n" +
-                ", queryString='" + queryString + '\'' + "\n" +
+                ", rawQueryString='" + rawQueryString + '\'' + "\n" +
                 ", fragment='" + fragment + '\'' + "\n" +
                 ", body=" + Arrays.toString(body) + "\n" +
         '}';
