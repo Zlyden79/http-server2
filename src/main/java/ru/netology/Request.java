@@ -24,7 +24,7 @@ public class Request {
     public char[] byteToChar(byte[] array) {
         int arrLength = array.length;
         char[] charArr = new char[arrLength];
-        for (int i=0; i < arrLength; i++){
+        for (int i = 0; i < arrLength; i++) {
             charArr[i] = (char) array[i];
         }
         return charArr;
@@ -105,6 +105,23 @@ public class Request {
 
     public List<NameValuePair> getQueryParam(String name) {
         return getQueryParams().stream()
+                .filter(a -> a.getName().equals(name))
+                .toList();
+    }
+
+    public List<NameValuePair> getPostParams() {
+        //Body из массива bytes конвертим в массив chars
+        char[] bodyToChar = byteToChar(this.body);
+        //из массива chars строим сырую строку поиска
+        String rowString = new String(Arrays.copyOf(bodyToChar, bodyToChar.length));
+        //устанавливаем сырую строку поиска в поле класса
+        setRawQueryString(rowString);
+        //вызываем уже написанный код для сырой строки поиска
+        return getQueryParams();
+    }
+
+    public List<NameValuePair> getPostParam(String name) {
+        return getPostParams().stream()
                 .filter(a -> a.getName().equals(name))
                 .toList();
     }
